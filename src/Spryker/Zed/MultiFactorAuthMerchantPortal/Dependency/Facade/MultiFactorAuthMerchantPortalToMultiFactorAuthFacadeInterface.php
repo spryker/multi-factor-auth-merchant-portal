@@ -64,4 +64,6 @@ interface MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface
      * @return void
      */
     public function deactivateUserMultiFactorAuth(MultiFactorAuthTransfer $multiFactorAuthTransfer): void;
+
+    public function invalidateUserCodes(MultiFactorAuthTransfer $multiFactorAuthTransfer): void;
 }

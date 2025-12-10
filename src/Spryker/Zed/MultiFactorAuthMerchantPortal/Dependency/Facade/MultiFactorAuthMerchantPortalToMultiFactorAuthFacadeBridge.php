@@ -92,4 +92,9 @@ class MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeBridge implements Mult
     {
         $this->multiFactorAuthFacade->deactivateUserMultiFactorAuth($multiFactorAuthTransfer);
     }
+
+    public function invalidateUserCodes(MultiFactorAuthTransfer $multiFactorAuthTransfer): void
+    {
+        $this->multiFactorAuthFacade->invalidateUserCodes($multiFactorAuthTransfer);
+    }
 }
