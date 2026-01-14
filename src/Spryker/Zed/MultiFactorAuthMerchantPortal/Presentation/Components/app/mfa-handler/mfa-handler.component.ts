@@ -26,6 +26,7 @@ interface FormSubmission {
 }
 
 @Component({
+    standalone: false,
     selector: 'mp-mfa-handler',
     templateUrl: './mfa-handler.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

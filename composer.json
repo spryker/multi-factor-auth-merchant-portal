@@ -15,7 +15,7 @@
         "spryker/transfer": "^3.27.0",
         "spryker/user": "^3.27.0",
         "spryker/zed-navigation-extension": "^1.1.0",
-        "spryker/zed-ui": "^3.4.0"
+        "spryker/zed-ui": "^4.0.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "*"
