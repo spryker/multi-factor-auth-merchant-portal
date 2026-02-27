@@ -26,6 +26,7 @@ use Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Client\MultiFactorAuthM
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToUserFacadeInterface;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\MultiFactorAuthMerchantPortalDependencyProvider;
+use Spryker\Zed\Router\Business\RouterFacadeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -180,5 +181,10 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
             $this->getMultiFactorAuthFacade(),
             $this->createRequestReader(),
         );
+    }
+
+    public function getRouterFacade(): RouterFacadeInterface
+    {
+        return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::FACADE_ROUTER);
     }
 }

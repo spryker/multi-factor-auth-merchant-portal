@@ -37,18 +37,22 @@ class MerchantPortalNavigationItemCollectionFilterPlugin extends AbstractPlugin 
      */
     public function filter(NavigationItemCollectionTransfer $navigationItemCollectionTransfer): NavigationItemCollectionTransfer
     {
-        $navigationItems = $navigationItemCollectionTransfer->getNavigationItems()->getArrayCopy();
-
-        if ($this->getFactory()->getUserFacade()->hasCurrentUser() === false) {
+        if (APPLICATION !== 'MERCHANT_PORTAL') {
             return $navigationItemCollectionTransfer;
         }
-
         $currentUser = $this->getFactory()->getUserFacade()->getCurrentUser();
+
+        $routeCollection = $this->getFactory()->getRouterFacade()
+            ->getMerchantPortalRouter()
+            ->getRouteCollection();
+        $navigationItems = $navigationItemCollectionTransfer->getNavigationItems()->getArrayCopy();
 
         foreach ($navigationItems as $navigationName => $navigationItem) {
             if (
-                $navigationName === static::NAVIGATION_ITEM_NAME
-                && (count($this->getFactory()->getUserMultiFactorAuthPlugins()) === 0 || $currentUser->getIsMerchantAgent())
+                ($navigationName === static::NAVIGATION_ITEM_NAME
+                && (count($this->getFactory()->getUserMultiFactorAuthPlugins()) === 0
+                || $currentUser->getIsMerchantAgent()))
+                || !$routeCollection->get($navigationName)
             ) {
                 unset($navigationItems[$navigationName]);
             }

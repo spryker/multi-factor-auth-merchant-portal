@@ -62,6 +62,8 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
      */
     public const SERVICE_ZED_UI_FACTORY = 'SERVICE_ZED_UI_FACTORY';
 
+    public const string FACADE_ROUTER = 'FACADE_ROUTER';
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -79,6 +81,7 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         $container = $this->addPostLoginMultiFactorAuthenticationPlugins($container);
         $container = $this->addUserMultiFactorAuthPlugins($container);
         $container = $this->addCsrfProviderService($container);
+        $container = $this->addRouterFacade($container);
 
         return $container;
     }
@@ -212,6 +215,15 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
     {
         $container->set(static::SERVICE_ZED_UI_FACTORY, function (Container $container) {
             return $container->getApplicationService(static::SERVICE_ZED_UI_FACTORY);
+        });
+
+        return $container;
+    }
+
+    protected function addRouterFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_ROUTER, function (Container $container) {
+            return $container->getLocator()->router()->facade();
         });
 
         return $container;
