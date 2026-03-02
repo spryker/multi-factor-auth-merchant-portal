@@ -36,19 +36,11 @@ class CodeValidationForm extends BaseMultiFactorAuthForm
      */
     protected const ENTER_CODE_LABEL_PLACEHOLDER = 'We sent the authentication code to your %s. Type it below to continue.';
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'codeValidationForm';
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     *
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);

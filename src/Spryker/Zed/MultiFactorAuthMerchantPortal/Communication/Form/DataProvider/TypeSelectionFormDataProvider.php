@@ -18,11 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TypeSelectionFormDataProvider
 {
-    /**
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\User\UserReaderInterface $userReader
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\Request\RequestReaderInterface $requestReader
-     */
     public function __construct(
         protected MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade,
         protected UserReaderInterface $userReader,
@@ -72,12 +67,6 @@ class TypeSelectionFormDataProvider
         return $types;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return bool
-     */
     protected function isActivationFlow(
         Request $request,
         UserTransfer $userTransfer

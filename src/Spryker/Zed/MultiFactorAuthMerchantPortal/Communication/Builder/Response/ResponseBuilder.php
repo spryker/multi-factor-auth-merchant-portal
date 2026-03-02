@@ -14,20 +14,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ResponseBuilder implements ResponseBuilderInterface
 {
-    /**
-     * @param \Spryker\Shared\ZedUi\ZedUiFactoryInterface $zedUiFactory
-     */
     public function __construct(
         protected ZedUiFactoryInterface $zedUiFactory
     ) {
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     * @param string $responseType
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     public function buildResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer, string $responseType): JsonResponse
     {
         $methodName = sprintf('return%sResponse', $responseType);

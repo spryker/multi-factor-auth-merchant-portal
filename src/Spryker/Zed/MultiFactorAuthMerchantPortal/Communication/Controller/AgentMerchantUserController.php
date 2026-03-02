@@ -21,11 +21,6 @@ class AgentMerchantUserController extends MerchantUserController
      */
     protected const AGENT_MERCHANT_USER_POST_AUTHENTICATION_TYPE = 'AGENT_MERCHANT_USER_POST_AUTHENTICATION_TYPE';
 
-    /**
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return void
-     */
     protected function executePostLoginMultiFactorAuthenticationPlugins(UserTransfer $userTransfer): void
     {
         foreach ($this->getFactory()->getPostLoginMultiFactorAuthenticationPlugins() as $plugin) {
@@ -38,17 +33,11 @@ class AgentMerchantUserController extends MerchantUserController
         }
     }
 
-    /**
-     * @return string
-     */
     protected function getGetEnabledTypesTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/AgentMerchantUser/get-enabled-types.twig';
     }
 
-    /**
-     * @return string
-     */
     protected function getSendCodeTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/AgentMerchantUser/send-code.twig';

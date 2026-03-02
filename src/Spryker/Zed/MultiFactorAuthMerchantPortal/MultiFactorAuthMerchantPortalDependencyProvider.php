@@ -64,11 +64,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
 
     public const string FACADE_ROUTER = 'FACADE_ROUTER';
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
@@ -86,11 +81,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addUserFacade(Container $container): Container
     {
         $container->set(static::FACADE_USER, function (Container $container) {
@@ -102,11 +92,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addMultiFactorAuthFacade(Container $container): Container
     {
         $container->set(static::FACADE_MULTI_FACTOR_AUTH, function (Container $container) {
@@ -118,11 +103,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addUserMultiFactorAuthPlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_USER_MULTI_FACTOR_AUTH, function () {
@@ -140,11 +120,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return [];
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addPostLoginMultiFactorAuthenticationPlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_POST_LOGIN_MULTI_FACTOR_AUTH, function () {
@@ -162,11 +137,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return [];
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCsrfProviderService(Container $container): Container
     {
         $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
@@ -176,11 +146,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function addTranslatorService(Container $container): Container
     {
         $container->set(static::SERVICE_TRANSLATOR, function (Container $container) {
@@ -190,11 +155,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addSessionClient(Container $container): Container
     {
         $container->set(static::CLIENT_SESSION, function (Container $container) {
@@ -206,11 +166,6 @@ class MultiFactorAuthMerchantPortalDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addZedUiFactory(Container $container): Container
     {
         $container->set(static::SERVICE_ZED_UI_FACTORY, function (Container $container) {

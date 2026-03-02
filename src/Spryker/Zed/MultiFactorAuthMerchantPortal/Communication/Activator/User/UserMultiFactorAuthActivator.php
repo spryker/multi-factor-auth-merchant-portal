@@ -17,22 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserMultiFactorAuthActivator implements UserMultiFactorAuthActivatorInterface
 {
-    /**
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\Request\RequestReaderInterface $requestReader
-     */
     public function __construct(
         protected MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade,
         protected RequestReaderInterface $requestReader
     ) {
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return void
-     */
     public function activate(Request $request, UserTransfer $userTransfer): void
     {
         $isActivation = $this->requestReader->get($request, MerchantUserController::IS_ACTIVATION);

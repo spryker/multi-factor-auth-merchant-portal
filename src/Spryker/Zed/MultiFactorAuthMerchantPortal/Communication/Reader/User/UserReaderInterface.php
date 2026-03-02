@@ -11,8 +11,5 @@ use Generated\Shared\Transfer\UserTransfer;
 
 interface UserReaderInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\UserTransfer
-     */
     public function getUser(): UserTransfer;
 }

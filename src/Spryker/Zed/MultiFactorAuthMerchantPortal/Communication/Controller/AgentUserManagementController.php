@@ -24,9 +24,6 @@ class AgentUserManagementController extends UserManagementController
      */
     protected const LOGIN_PATH = '/agent-security-merchant-portal-gui/login';
 
-    /**
-     * @return string
-     */
     protected function getSetUpTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/UserManagement/set-up-agent-merchant-portal.twig';

@@ -12,11 +12,5 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 interface ResponseBuilderInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     * @param string $responseType
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     public function buildResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer, string $responseType): JsonResponse;
 }

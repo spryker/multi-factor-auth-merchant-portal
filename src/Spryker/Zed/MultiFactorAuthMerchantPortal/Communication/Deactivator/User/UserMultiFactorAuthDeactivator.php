@@ -17,22 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserMultiFactorAuthDeactivator implements UserMultiFactorAuthDeactivatorInterface
 {
-    /**
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade
-     * @param \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\Request\RequestReaderInterface $requestReader
-     */
     public function __construct(
         protected MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface $multiFactorAuthFacade,
         protected RequestReaderInterface $requestReader
     ) {
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return void
-     */
     public function deactivate(Request $request, UserTransfer $userTransfer): void
     {
         $isDeactivation = $this->requestReader->get($request, MerchantUserController::IS_DEACTIVATION);

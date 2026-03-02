@@ -114,9 +114,6 @@ class UserManagementController extends AbstractController
      */
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
-    /**
-     * @return void
-     */
     public function initialize(): void
     {
         parent::initialize();
@@ -145,11 +142,6 @@ class UserManagementController extends AbstractController
         ]);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function activateAction(Request $request): RedirectResponse
     {
         $userTransfer = $this->getUser();
@@ -177,11 +169,6 @@ class UserManagementController extends AbstractController
         return $this->redirectResponse(static::URL_REDIRECT_SET_UP_PAGE);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function deactivateAction(Request $request): RedirectResponse
     {
         $userTransfer = $this->getUser();
@@ -209,11 +196,6 @@ class UserManagementController extends AbstractController
         return $this->redirectResponse(static::URL_REDIRECT_SET_UP_PAGE);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MultiFactorAuthValidationRequestTransfer $multiFactorValidationRequestTransfer
-     *
-     * @return bool
-     */
     protected function isCodeBlocked(MultiFactorAuthValidationRequestTransfer $multiFactorValidationRequestTransfer): bool
     {
         $multiFactorValidationResponseTransfer = $this->getFactory()
@@ -226,12 +208,6 @@ class UserManagementController extends AbstractController
         return $multiFactorValidationResponseTransfer->getStatus() !== MultiFactorAuthMerchantPortalConstants::CODE_VERIFIED;
     }
 
-    /**
-     * @param string|null $token
-     * @param string $tokenId
-     *
-     * @return bool
-     */
     protected function isCsrfTokenValid(?string $token, string $tokenId): bool
     {
         if (!$token) {
@@ -243,9 +219,6 @@ class UserManagementController extends AbstractController
         return $this->csrfTokenManager->isTokenValid($csrfToken);
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\UserTransfer
-     */
     protected function getUser(): UserTransfer
     {
         if ($this->getFactory()->getUserFacade()->hasCurrentUser() === true) {
@@ -265,13 +238,6 @@ class UserManagementController extends AbstractController
         return $this->getFactory()->getUserFacade()->getUserCollection($userCriteriaTransfer)->getUsers()->offsetGet(0);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Generated\Shared\Transfer\MultiFactorAuthValidationRequestTransfer $multiFactorValidationRequestTransfer
-     * @param string $csrfTokenId
-     *
-     * @return bool
-     */
     protected function isRequestInvalid(
         Request $request,
         MultiFactorAuthValidationRequestTransfer $multiFactorValidationRequestTransfer,
@@ -281,21 +247,11 @@ class UserManagementController extends AbstractController
             || $this->isCodeBlocked($multiFactorValidationRequestTransfer);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $parameter
-     * @param string|null $formName
-     *
-     * @return mixed
-     */
     protected function getParameterFromRequest(Request $request, string $parameter, ?string $formName = null): mixed
     {
         return $this->getFactory()->createRequestReader()->get($request, $parameter, $formName);
     }
 
-    /**
-     * @return string
-     */
     protected function getSetUpTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/UserManagement/set-up-merchant-portal.twig';

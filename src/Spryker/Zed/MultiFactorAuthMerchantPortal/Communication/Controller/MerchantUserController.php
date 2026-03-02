@@ -201,13 +201,6 @@ class MerchantUserController extends AbstractController
         return $this->executeCodeValidation($request, $codeValidationForm, $userTransfer);
     }
 
-    /**
-     * @param string $multiFactorAuthType
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return void
-     */
     protected function sendUserCode(string $multiFactorAuthType, UserTransfer $userTransfer, Request $request): void
     {
         foreach ($this->getFactory()->getUserMultiFactorAuthPlugins() as $plugin) {
@@ -266,12 +259,6 @@ class MerchantUserController extends AbstractController
         return $this->returnSendCodeResponse(['form' => $codeValidationForm->createView()], static::RESPONSE_TYPE_REFRESH_MODAL);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     * @param \Symfony\Component\Form\FormInterface $codeValidationForm
-     *
-     * @return \Generated\Shared\Transfer\MultiFactorAuthValidationResponseTransfer
-     */
     protected function validateCode(
         UserTransfer $userTransfer,
         FormInterface $codeValidationForm
@@ -295,11 +282,6 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->getMultiFactorAuthFacade()->validateUserCode($multiFactorAuthTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return void
-     */
     protected function executePostLoginMultiFactorAuthenticationPlugins(UserTransfer $userTransfer): void
     {
         foreach ($this->getFactory()->getPostLoginMultiFactorAuthenticationPlugins() as $plugin) {
@@ -351,13 +333,6 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->createResponseBuilder()->buildResponse($zedUIFormResquestActionTransfer, $responseType);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $result
-     * @param string|null $formName
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function returnValidationResponse(Request $request, ?string $result = null, ?string $formName = null): JsonResponse
     {
         $zedUIFormResquestActionTransfer = (new ZedUiFormRequestActionTransfer())
@@ -368,11 +343,6 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->createResponseBuilder()->buildResponse($zedUIFormResquestActionTransfer, static::RESPONSE_TYPE_CLOSE_MODAL);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function returnSubmitAjaxFormResponse(Request $request): JsonResponse
     {
         $zedUIFormResquestActionTransfer = (new ZedUiFormRequestActionTransfer())
@@ -381,24 +351,11 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->createResponseBuilder()->buildResponse($zedUIFormResquestActionTransfer, static::RESPONSE_TYPE_SUBMIT_AJAX_FORM);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $formName
-     *
-     * @return bool
-     */
     protected function isSetUpMultiFactorAuthStep(Request $request, ?string $formName = null): bool
     {
         return $this->assertIsActivation($request, $formName) || $this->assertIsDeactivation($request, $formName);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $multiFactorAuthType
-     * @param string|null $formName
-     *
-     * @return bool
-     */
     protected function isSelectedTypeVerificationRequired(Request $request, string $multiFactorAuthType, ?string $formName = null): bool
     {
         return $this->assertIsActivation($request, $formName) && $this->getParameterFromRequest($request, static::TYPE_TO_SET_UP, $formName) !== $multiFactorAuthType;
@@ -424,23 +381,11 @@ class MerchantUserController extends AbstractController
         return count($options[static::TYPES]) === 1;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $formName
-     *
-     * @return string|null
-     */
     protected function assertIsActivation(Request $request, ?string $formName = null): ?string
     {
         return $this->getParameterFromRequest($request, static::IS_ACTIVATION, $formName);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $formName
-     *
-     * @return string|null
-     */
     protected function assertIsDeactivation(Request $request, ?string $formName = null): ?string
     {
         return $this->getParameterFromRequest($request, static::IS_DEACTIVATION, $formName);
@@ -464,37 +409,21 @@ class MerchantUserController extends AbstractController
         ];
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $parameter
-     * @param string|null $formName
-     *
-     * @return mixed
-     */
     protected function getParameterFromRequest(Request $request, string $parameter, ?string $formName = null): mixed
     {
         return $this->getFactory()->createRequestReader()->get($request, $parameter, $formName);
     }
 
-    /**
-     * @return string
-     */
     protected function getGetEnabledTypesTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/MerchantUser/get-enabled-types.twig';
     }
 
-    /**
-     * @return string
-     */
     protected function getSendCodeTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/MerchantUser/send-code.twig';
     }
 
-    /**
-     * @return string
-     */
     protected function getValidationResponseTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/Partials/validation-response.twig';

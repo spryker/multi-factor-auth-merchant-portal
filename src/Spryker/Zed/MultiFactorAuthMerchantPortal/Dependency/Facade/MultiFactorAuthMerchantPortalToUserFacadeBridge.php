@@ -26,27 +26,16 @@ class MultiFactorAuthMerchantPortalToUserFacadeBridge implements MultiFactorAuth
         $this->userFacade = $userFacade;
     }
 
-    /**
-     * @return bool
-     */
     public function hasCurrentUser(): bool
     {
         return $this->userFacade->hasCurrentUser();
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\UserTransfer
-     */
     public function getCurrentUser(): UserTransfer
     {
         return $this->userFacade->getCurrentUser();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\UserCriteriaTransfer $userCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\UserCollectionTransfer
-     */
     public function getUserCollection(UserCriteriaTransfer $userCriteriaTransfer): UserCollectionTransfer
     {
         return $this->userFacade->getUserCollection($userCriteriaTransfer);

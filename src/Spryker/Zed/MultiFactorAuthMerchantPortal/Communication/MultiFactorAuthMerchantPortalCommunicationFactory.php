@@ -36,49 +36,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunicationFactory
 {
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToUserFacadeInterface
-     */
     public function getUserFacade(): MultiFactorAuthMerchantPortalToUserFacadeInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::FACADE_USER);
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Client\MultiFactorAuthMerchantPortalToSessionClientInterface
-     */
     public function getSessionClient(): MultiFactorAuthMerchantPortalToSessionClientInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::CLIENT_SESSION);
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface
-     */
     public function getMultiFactorAuthFacade(): MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::FACADE_MULTI_FACTOR_AUTH);
     }
 
-    /**
-     * @return \Symfony\Contracts\Translation\TranslatorInterface
-     */
     public function getTranslatorService(): TranslatorInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::SERVICE_TRANSLATOR);
     }
 
-    /**
-     * @return \Spryker\Shared\ZedUi\ZedUiFactoryInterface
-     */
     public function getZedUiFactory(): ZedUiFactoryInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::SERVICE_ZED_UI_FACTORY);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
-     */
     public function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
@@ -100,9 +82,6 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
         return $this->getProvidedDependency(MultiFactorAuthMerchantPortalDependencyProvider::PLUGINS_USER_MULTI_FACTOR_AUTH);
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Form\DataProvider\TypeSelectionFormDataProvider
-     */
     public function createTypeSelectionFormDataProvider(): TypeSelectionFormDataProvider
     {
         return new TypeSelectionFormDataProvider(
@@ -132,9 +111,6 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
         return $this->getFormFactory()->create(CodeValidationForm::class, null, $formOptions);
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\User\UserReaderInterface
-     */
     public function createUserReader(): UserReaderInterface
     {
         return new UserReader(
@@ -143,17 +119,11 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
         );
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Reader\Request\RequestReaderInterface
-     */
     public function createRequestReader(): RequestReaderInterface
     {
         return new RequestReader();
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Builder\Response\ResponseBuilderInterface
-     */
     public function createResponseBuilder(): ResponseBuilderInterface
     {
         return new ResponseBuilder(
@@ -161,9 +131,6 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
         );
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Activator\User\UserMultiFactorAuthActivatorInterface
-     */
     public function createUserMultiFactorAuthActivator(): UserMultiFactorAuthActivatorInterface
     {
         return new UserMultiFactorAuthActivator(
@@ -172,9 +139,6 @@ class MultiFactorAuthMerchantPortalCommunicationFactory extends AbstractCommunic
         );
     }
 
-    /**
-     * @return \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Deactivator\User\UserMultiFactorAuthDeactivatorInterface
-     */
     public function createUserMultiFactorAuthDeactivator(): UserMultiFactorAuthDeactivatorInterface
     {
         return new UserMultiFactorAuthDeactivator(
