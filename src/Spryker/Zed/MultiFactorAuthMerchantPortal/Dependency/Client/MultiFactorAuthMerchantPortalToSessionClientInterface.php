@@ -10,7 +10,6 @@ namespace Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Client;
 interface MultiFactorAuthMerchantPortalToSessionClientInterface
 {
     /**
-     * @param string $name
      * @param mixed $default The default value if not found
      *
      * @return mixed

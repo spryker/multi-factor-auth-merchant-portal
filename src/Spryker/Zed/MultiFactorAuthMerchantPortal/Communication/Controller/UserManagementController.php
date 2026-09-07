@@ -109,9 +109,6 @@ class UserManagementController extends AbstractController
      */
     protected const MULTI_FACTOR_AUTH_LOGIN_USER_EMAIL_SESSION_KEY = '_multi_factor_auth_login_user_email';
 
-    /**
-     * @var \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
-     */
     protected CsrfTokenManagerInterface $csrfTokenManager;
 
     public function initialize(): void

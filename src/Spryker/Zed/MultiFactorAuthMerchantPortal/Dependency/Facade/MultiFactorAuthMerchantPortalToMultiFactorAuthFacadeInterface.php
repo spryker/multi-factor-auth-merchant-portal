@@ -24,10 +24,7 @@ interface MultiFactorAuthMerchantPortalToMultiFactorAuthFacadeInterface
     ): MultiFactorAuthTypesCollectionTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\MultiFactorAuthValidationRequestTransfer $multiFactorAuthValidationRequestTransfer
      * @param array<int> $statuses
-     *
-     * @return \Generated\Shared\Transfer\MultiFactorAuthValidationResponseTransfer
      */
     public function validateUserMultiFactorAuthStatus(
         MultiFactorAuthValidationRequestTransfer $multiFactorAuthValidationRequestTransfer,

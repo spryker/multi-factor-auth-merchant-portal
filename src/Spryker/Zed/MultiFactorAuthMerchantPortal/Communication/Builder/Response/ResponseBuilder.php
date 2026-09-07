@@ -29,8 +29,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     *
      * @return array<string, mixed>
      */
     protected function returnOpenModalResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer): array
@@ -43,8 +41,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     *
      * @return array<string, mixed>
      */
     protected function returnRefreshModalResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer): array
@@ -57,8 +53,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     *
      * @return array<string, mixed>
      */
     protected function returnCloseModalResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer): array
@@ -87,8 +81,6 @@ class ResponseBuilder implements ResponseBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer
-     *
      * @return array<string, mixed>
      */
     protected function returnSubmitAjaxFormResponse(ZedUiFormRequestActionTransfer $zedUIFormRequestActionTransfer): array

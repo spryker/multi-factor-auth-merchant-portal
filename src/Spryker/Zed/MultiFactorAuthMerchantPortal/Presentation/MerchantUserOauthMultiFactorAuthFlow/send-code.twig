@@ -1,0 +1,17 @@
+{% extends '@SecurityMerchantPortalGui/Layout/layout.twig' %}
+
+{% set title = 'Two-Factor Authentication' | trans %}
+
+{% block form %}
+    {% form_theme form '@ZedUi/Form/form-webcomponent-layout.twig' %}
+
+    {% if errorMessage is defined and errorMessage %}
+        <web-spy-notification type="error">{{ errorMessage | trans }}</web-spy-notification>
+    {% endif %}
+
+    {{ form_errors(form) }}
+    {{ form_start(form, {action: '/multi-factor-auth-merchant-portal/merchant-user-oauth-multi-factor-auth-flow/send-code', attr: {novalidate: ''}}) }}
+        {{ form_widget(form) }}
+        <web-spy-button type="submit" class="{{ submitButtonClass }}" cloak>{{ 'Verify Code' | trans }}</web-spy-button>
+    {{ form_end(form) }}
+{% endblock %}

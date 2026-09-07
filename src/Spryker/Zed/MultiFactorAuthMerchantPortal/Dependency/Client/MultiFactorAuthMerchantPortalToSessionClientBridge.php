@@ -23,7 +23,6 @@ class MultiFactorAuthMerchantPortalToSessionClientBridge implements MultiFactorA
     }
 
     /**
-     * @param string $name
      * @param mixed $default The default value if not found
      *
      * @return mixed

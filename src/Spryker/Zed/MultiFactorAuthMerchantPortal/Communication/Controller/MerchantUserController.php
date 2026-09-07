@@ -16,8 +16,8 @@ use Spryker\Shared\MultiFactorAuthMerchantPortal\MultiFactorAuthMerchantPortalCo
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -119,8 +119,6 @@ class MerchantUserController extends AbstractController
     protected const MERCHANT_USER_POST_AUTHENTICATION_TYPE = 'MERCHANT_USER_POST_AUTHENTICATION_TYPE';
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response|array<string, mixed>
      */
     public function getEnabledTypesAction(Request $request)
@@ -163,11 +161,6 @@ class MerchantUserController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $multiFactorAuthType
-     * @param \Symfony\Component\Form\FormInterface|null $form
-     * @param string $responseType
-     *
      * @return \Symfony\Component\HttpFoundation\Response|array<string, mixed>
      */
     public function sendCodeAction(
@@ -221,10 +214,6 @@ class MerchantUserController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\Form\FormInterface $codeValidationForm
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
      * @return \Symfony\Component\HttpFoundation\Response|array<string, mixed>
      */
     protected function executeCodeValidation(
@@ -298,10 +287,8 @@ class MerchantUserController extends AbstractController
 
     /**
      * @param array<string, mixed> $responseData
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function returnGetEnabledTypesResponse(array $responseData): JsonResponse
+    protected function returnGetEnabledTypesResponse(array $responseData): Response
     {
         /** @var string $renderedForm */
         $renderedForm = $this->renderView(
@@ -316,11 +303,8 @@ class MerchantUserController extends AbstractController
 
     /**
      * @param array<string, mixed> $responseData
-     * @param string $responseType
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function returnSendCodeResponse(array $responseData, string $responseType): JsonResponse
+    protected function returnSendCodeResponse(array $responseData, string $responseType): Response
     {
         /** @var string $renderedForm */
         $renderedForm = $this->renderView(
@@ -333,7 +317,7 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->createResponseBuilder()->buildResponse($zedUIFormResquestActionTransfer, $responseType);
     }
 
-    protected function returnValidationResponse(Request $request, ?string $result = null, ?string $formName = null): JsonResponse
+    protected function returnValidationResponse(Request $request, ?string $result = null, ?string $formName = null): Response
     {
         $zedUIFormResquestActionTransfer = (new ZedUiFormRequestActionTransfer())
             ->fromArray($this->extractSetupParameters($request, $formName), true)
@@ -343,7 +327,7 @@ class MerchantUserController extends AbstractController
         return $this->getFactory()->createResponseBuilder()->buildResponse($zedUIFormResquestActionTransfer, static::RESPONSE_TYPE_CLOSE_MODAL);
     }
 
-    protected function returnSubmitAjaxFormResponse(Request $request): JsonResponse
+    protected function returnSubmitAjaxFormResponse(Request $request): Response
     {
         $zedUIFormResquestActionTransfer = (new ZedUiFormRequestActionTransfer())
             ->setAjaxFormSelector($this->getParameterFromRequest($request, static::MODAL_AJAX_FORM_SELECTOR_PARAMETER));
@@ -363,8 +347,6 @@ class MerchantUserController extends AbstractController
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @return bool
      */
     protected function assertNoTypesEnabled(array $options): bool
     {
@@ -373,8 +355,6 @@ class MerchantUserController extends AbstractController
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @return bool
      */
     protected function assertOneTypeEnabled(array $options): bool
     {
@@ -392,9 +372,6 @@ class MerchantUserController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string|null $formName
-     *
      * @return array<string, mixed>
      */
     protected function extractSetupParameters(Request $request, ?string $formName = null): array

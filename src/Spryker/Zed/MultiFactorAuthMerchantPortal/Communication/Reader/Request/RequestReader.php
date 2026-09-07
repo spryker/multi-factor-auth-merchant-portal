@@ -12,10 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 class RequestReader implements RequestReaderInterface
 {
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $parameter
-     * @param string|null $formName
-     *
      * @return mixed
      */
     public function get(Request $request, string $parameter, ?string $formName = null)
