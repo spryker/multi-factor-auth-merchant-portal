@@ -233,6 +233,9 @@ class MerchantUserController extends AbstractController
             }
 
             $this->executePostLoginMultiFactorAuthenticationPlugins($userTransfer);
+            if ($this->isSetUpMultiFactorAuthStep($request, $codeValidationForm->getName()) === false) {
+                $this->regenerateSession($request);
+            }
 
             return $this->returnValidationResponse($request, null, $codeValidationForm->getName());
         }
@@ -404,5 +407,12 @@ class MerchantUserController extends AbstractController
     protected function getValidationResponseTemplatePath(): string
     {
         return '@MultiFactorAuthMerchantPortal/Partials/validation-response.twig';
+    }
+
+    protected function regenerateSession(Request $request): void
+    {
+        if ($request->hasSession()) {
+            $request->getSession()->migrate(true);
+        }
     }
 }

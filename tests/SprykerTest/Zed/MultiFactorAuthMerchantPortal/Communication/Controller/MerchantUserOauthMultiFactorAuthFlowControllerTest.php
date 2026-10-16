@@ -8,15 +8,22 @@
 namespace SprykerTest\Zed\MultiFactorAuthMerchantPortal\Communication\Controller;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\MultiFactorAuthTransfer;
+use Generated\Shared\Transfer\MultiFactorAuthValidationResponseTransfer;
+use Generated\Shared\Transfer\UserTransfer;
 use ReflectionMethod;
+use Spryker\Shared\MultiFactorAuthMerchantPortal\MultiFactorAuthMerchantPortalConstants;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Controller\MerchantUserController;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Controller\MerchantUserOauthMultiFactorAuthFlowController;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\MultiFactorAuthMerchantPortalCommunicationFactory;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Client\MultiFactorAuthMerchantPortalToSessionClientInterface;
 use Spryker\Zed\MultiFactorAuthMerchantPortal\Dependency\Facade\MultiFactorAuthMerchantPortalToUserFacadeInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Auto-generated group annotations
@@ -59,6 +66,16 @@ class MerchantUserOauthMultiFactorAuthFlowControllerTest extends Unit
      * @uses \\Spryker\\Zed\\MultiFactorAuthMerchantPortal\\Communication\\Controller\\MerchantUserOauthMultiFactorAuthFlowController::MULTI_FACTOR_AUTH_LOGIN_USER_EMAIL_SESSION_KEY
      */
     protected const string MULTI_FACTOR_AUTH_LOGIN_EMAIL_SESSION_KEY = '_multi_factor_auth_login_user_email';
+
+    protected const string SOME_MULTI_FACTOR_AUTH_TYPE = 'EMAIL';
+
+    protected const string SOME_ERROR_MESSAGE = 'multi_factor_auth.error.code_blocked';
+
+    protected const string CODE_VALIDATION_FORM_NAME = 'multiFactorAuthCodeValidationForm';
+
+    protected const string SESSION_ATTRIBUTE_KEY = 'session-attribute-key';
+
+    protected const string SESSION_ATTRIBUTE_VALUE = 'session-attribute-value';
 
     public function testReturnGetEnabledTypesResponseRendersOauthEnabledTypesTemplate(): void
     {
@@ -241,6 +258,83 @@ class MerchantUserOauthMultiFactorAuthFlowControllerTest extends Unit
         $this->assertSame(static::ROUTE_MERCHANT_PORTAL_LOGIN, $url);
     }
 
+    public function testExecuteCodeValidationRegeneratesSessionIdWhenCodeIsVerified(): void
+    {
+        // Arrange
+        $request = $this->createRequestWithStartedSession();
+        $preVerificationSessionId = $request->getSession()->getId();
+        $controllerMock = $this->getMockBuilder(MerchantUserController::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['validateCode', 'isSelectedTypeVerificationRequired', 'isSetUpMultiFactorAuthStep', 'executePostLoginMultiFactorAuthenticationPlugins', 'returnValidationResponse'])
+            ->getMock();
+
+        $controllerMock->method('validateCode')->willReturn(
+            (new MultiFactorAuthValidationResponseTransfer())->setStatus(MultiFactorAuthMerchantPortalConstants::CODE_VERIFIED),
+        );
+        $controllerMock->method('isSelectedTypeVerificationRequired')->willReturn(false);
+        $controllerMock->method('isSetUpMultiFactorAuthStep')->willReturn(false);
+        $controllerMock->method('returnValidationResponse')->willReturn(new Response());
+
+        // Act
+        (new ReflectionMethod($controllerMock, 'executeCodeValidation'))
+            ->invoke($controllerMock, $request, $this->createCodeValidationFormMock(), new UserTransfer());
+
+        // Assert
+        $this->assertNotSame($preVerificationSessionId, $request->getSession()->getId(), 'Expected a new session id after a verified Multi-Factor Authentication code.');
+        $this->assertSame(static::SESSION_ATTRIBUTE_VALUE, $request->getSession()->get(static::SESSION_ATTRIBUTE_KEY), 'Expected the session data to be kept after the session id change.');
+    }
+
+    public function testExecuteCodeValidationKeepsSessionIdWhenSetUpCodeIsVerified(): void
+    {
+        // Arrange
+        $request = $this->createRequestWithStartedSession();
+        $preVerificationSessionId = $request->getSession()->getId();
+        $controllerMock = $this->getMockBuilder(MerchantUserController::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['validateCode', 'isSelectedTypeVerificationRequired', 'isSetUpMultiFactorAuthStep', 'executePostLoginMultiFactorAuthenticationPlugins', 'returnValidationResponse'])
+            ->getMock();
+
+        $controllerMock->method('validateCode')->willReturn(
+            (new MultiFactorAuthValidationResponseTransfer())->setStatus(MultiFactorAuthMerchantPortalConstants::CODE_VERIFIED),
+        );
+        $controllerMock->method('isSelectedTypeVerificationRequired')->willReturn(false);
+        $controllerMock->method('isSetUpMultiFactorAuthStep')->willReturn(true);
+        $controllerMock->method('returnValidationResponse')->willReturn(new Response());
+
+        // Act
+        (new ReflectionMethod($controllerMock, 'executeCodeValidation'))
+            ->invoke($controllerMock, $request, $this->createCodeValidationFormMock(), new UserTransfer());
+
+        // Assert
+        $this->assertSame($preVerificationSessionId, $request->getSession()->getId());
+    }
+
+    public function testExecuteCodeValidationKeepsSessionIdWhenCodeIsBlocked(): void
+    {
+        // Arrange
+        $request = $this->createRequestWithStartedSession();
+        $preVerificationSessionId = $request->getSession()->getId();
+        $controllerMock = $this->getMockBuilder(MerchantUserController::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['validateCode', 'executePostLoginMultiFactorAuthenticationPlugins', 'addErrorMessage', 'returnValidationResponse'])
+            ->getMock();
+
+        $controllerMock->method('validateCode')->willReturn(
+            (new MultiFactorAuthValidationResponseTransfer())
+                ->setStatus(MultiFactorAuthMerchantPortalConstants::CODE_BLOCKED)
+                ->setMessage(static::SOME_ERROR_MESSAGE),
+        );
+        $controllerMock->method('addErrorMessage')->willReturn($controllerMock);
+        $controllerMock->method('returnValidationResponse')->willReturn(new Response());
+
+        // Act
+        (new ReflectionMethod($controllerMock, 'executeCodeValidation'))
+            ->invoke($controllerMock, $request, $this->createCodeValidationFormMock(), new UserTransfer());
+
+        // Assert
+        $this->assertSame($preVerificationSessionId, $request->getSession()->getId());
+    }
+
     protected function createControllerWithCurrentUser(bool $hasCurrentUser): MerchantUserOauthMultiFactorAuthFlowController
     {
         $userFacadeMock = $this->createMock(MultiFactorAuthMerchantPortalToUserFacadeInterface::class);
@@ -303,5 +397,26 @@ class MerchantUserOauthMultiFactorAuthFlowControllerTest extends Unit
                 'Expected no pending challenge once the code is verified or the visitor never started a login.',
             ],
         ];
+    }
+
+    protected function createRequestWithStartedSession(): Request
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+        $session->set(static::SESSION_ATTRIBUTE_KEY, static::SESSION_ATTRIBUTE_VALUE);
+
+        $request = new Request();
+        $request->setSession($session);
+
+        return $request;
+    }
+
+    protected function createCodeValidationFormMock(): FormInterface
+    {
+        $formMock = $this->createMock(FormInterface::class);
+        $formMock->method('getName')->willReturn(static::CODE_VALIDATION_FORM_NAME);
+        $formMock->method('getData')->willReturn([MultiFactorAuthTransfer::TYPE => static::SOME_MULTI_FACTOR_AUTH_TYPE]);
+
+        return $formMock;
     }
 }
