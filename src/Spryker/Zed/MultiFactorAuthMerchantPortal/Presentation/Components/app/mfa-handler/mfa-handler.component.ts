@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import {
     AfterContentInit,
+    booleanAttribute,
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     Injector,
     Input,
     OnChanges,
@@ -25,6 +27,12 @@ interface FormSubmission {
     isAjax: boolean;
 }
 
+interface ActionResponse {
+    actions?: { type?: string }[];
+}
+
+const REDIRECT_ACTION_TYPE = 'redirect';
+
 @Component({
     standalone: false,
     selector: 'mp-mfa-handler',
@@ -36,11 +44,13 @@ export class MfaHandlerComponent implements OnChanges, OnInit, AfterContentInit,
     @Input() formSelector: string;
     @Input() url: string;
     @Input() ajaxFormSelector: string;
+    @Input({ transform: booleanAttribute }) isLogin = false;
     private formSubmission$ = new Subject<FormSubmission>();
     private destroyed$ = new Subject<void>();
 
     private formSubmitHandler: ((event: Event) => void) | null = null;
     private ajaxFormSubmitHandler: ((event: Event) => void) | null = null;
+    private isLoginSubmitted = false;
 
     constructor(
         private httpClient: HttpClient,
@@ -57,6 +67,7 @@ export class MfaHandlerComponent implements OnChanges, OnInit, AfterContentInit,
             )
             .subscribe((response) => {
                 this.ajaxActionService.handle(response, this.injector);
+                this.releaseLoginSubmission(response);
             });
     }
 
@@ -93,6 +104,13 @@ export class MfaHandlerComponent implements OnChanges, OnInit, AfterContentInit,
         this.destroyed$.complete();
     }
 
+    @HostListener('window:pageshow', ['$event'])
+    onPageShow(event: PageTransitionEvent): void {
+        if (event.persisted) {
+            this.isLoginSubmitted = false;
+        }
+    }
+
     private setupFormHandler(): void {
         const formElement = document.querySelector(this.formSelector) as HTMLFormElement;
         if (!formElement) {
@@ -114,10 +132,30 @@ export class MfaHandlerComponent implements OnChanges, OnInit, AfterContentInit,
             }
 
             event.preventDefault();
+
+            if (this.isLoginSubmitted) {
+                return;
+            }
+
+            this.isLoginSubmitted = this.isLogin;
             this.sendFormData(formElement);
         };
 
         formElement.addEventListener('submit', this.formSubmitHandler);
+    }
+
+    private releaseLoginSubmission(response: unknown): void {
+        if (this.isRedirectResponse(response)) {
+            return;
+        }
+
+        this.isLoginSubmitted = false;
+    }
+
+    private isRedirectResponse(response: unknown): boolean {
+        const actions = (response as ActionResponse | null)?.actions;
+
+        return Array.isArray(actions) && actions.some((action) => action?.type === REDIRECT_ACTION_TYPE);
     }
 
     private setupAjaxFormHandler(): void {

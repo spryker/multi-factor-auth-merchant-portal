@@ -3,5 +3,6 @@
         form-selector="{{ formSelector | default('') }}"
         url="{{ url }}"
         ajax-form-selector="{{ ajaxFormSelector | default('') }}"
+        {% if isLogin | default(false) %}is-login{% endif %}
     ></web-mp-mfa-handler>
 {% endblock %}
