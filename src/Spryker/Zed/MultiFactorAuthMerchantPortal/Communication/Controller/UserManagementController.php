@@ -126,7 +126,6 @@ class UserManagementController extends AbstractController
             return $this->redirectResponse(static::LOGIN_PATH);
         }
 
-        $userMultiFactorAuthPlugins = $this->getFactory()->getUserMultiFactorAuthPlugins();
         $multiFactorAuthCriteriaTransfer = (new MultiFactorAuthCriteriaTransfer())
             ->setUser($this->getUser());
 
