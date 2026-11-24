@@ -1,2 +1,8 @@
 Continue,Weiter
 "Multi-Factor Authentication is required for your account, but no verification method is currently available. Please contact site support.","Für Ihr Konto ist eine Multi-Faktor-Authentifizierung erforderlich, es ist jedoch derzeit keine Verifizierungsmethode verfügbar. Bitte wenden Sie sich an den Support."
+"Keep your account secure","Schützen Sie Ihr Konto"
+"Add an extra step when you sign in. After you enter your password, we ask for a one-time code. This way, only you can access your account, even if someone else knows your password.","Fügen Sie bei der Anmeldung einen zusätzlichen Schritt hinzu. Nachdem Sie Ihr Passwort eingegeben haben, fragen wir nach einem Einmalcode. So können nur Sie auf Ihr Konto zugreifen, selbst wenn jemand anderes Ihr Passwort kennt."
+"Click ""Activate"" next to the method you want to use.","Klicken Sie neben der gewünschten Methode auf „Aktivieren“."
+"We send you a one-time code. For Email, check the inbox of the email address you use for this account.","Wir senden Ihnen einen Einmalcode. Bei E-Mail finden Sie ihn im Posteingang der E-Mail-Adresse, die Sie für dieses Konto verwenden."
+"Enter the code to confirm. From now on, you enter a new code after your password every time you sign in.","Geben Sie den Code zur Bestätigung ein. Ab jetzt geben Sie bei jeder Anmeldung nach Ihrem Passwort einen neuen Code ein."
+"You can turn this off at any time by clicking ""Deactivate"". To confirm, we ask you for a code.","Sie können dies jederzeit mit „Deaktivieren“ ausschalten. Zur Bestätigung fragen wir Sie nach einem Code."

@@ -11,6 +11,18 @@
     <web-mp-mfa-setup-table cloak>
         <h1 title>{{ 'Multi-Factor Authentication' | trans }}</h1>
 
+        {% block guidance %}
+            <web-spy-card cloak class="mfa-setup-table__guidance" spy-title="{{ 'Keep your account secure' | trans }}" data-qa="mfa-setup-guidance">
+                <p class="mfa-setup-table__guidance-intro">{{ 'Add an extra step when you sign in. After you enter your password, we ask for a one-time code. This way, only you can access your account, even if someone else knows your password.' | trans }}</p>
+                <ol class="mfa-setup-table__guidance-steps">
+                    <li class="mfa-setup-table__guidance-step">{{ 'Click "Activate" next to the method you want to use.' | trans }}</li>
+                    <li class="mfa-setup-table__guidance-step">{{ 'We send you a one-time code. For Email, check the inbox of the email address you use for this account.' | trans }}</li>
+                    <li class="mfa-setup-table__guidance-step">{{ 'Enter the code to confirm. From now on, you enter a new code after your password every time you sign in.' | trans }}</li>
+                </ol>
+                <p class="mfa-setup-table__guidance-note">{{ 'You can turn this off at any time by clicking "Deactivate". To confirm, we ask you for a code.' | trans }}</p>
+            </web-spy-card>
+        {% endblock %}
+
         <web-spy-card cloak spy-title="{{ 'Authentication Methods' | trans }}">
             {% block table %}
                 <div class="spy-row spy-row-gutter-lg">
@@ -46,7 +58,7 @@
                                             {{ method.type | capitalize }}
                                         </div>
                                         <div class="mfa-setup-table__cell mfa-setup-table__cell--status">
-                                            <web-spy-chips color="grey">{{ label }}</web-spy-chips>
+                                            <web-spy-chips color="{{ method.status ? 'green' : 'gray' }}">{{ label }}</web-spy-chips>
                                         </div>
                                         <div class="mfa-setup-table__cell mfa-setup-table__cell--actions">
                                             {% set url = "/multi-factor-auth-merchant-portal/merchant-user/get-enabled-types?#{flowType}=true&type_to_set_up=#{method.type}" %}
